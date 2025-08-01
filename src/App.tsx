@@ -117,6 +117,7 @@ function App() {
               visibleSections.has('sobre') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
             }`}
           >
+            
             <h2 className="text-4xl md:text-5xl font-extralight mb-12 tracking-wide">
               Sobre a Opsis
             </h2>
