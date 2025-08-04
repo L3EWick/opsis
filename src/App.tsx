@@ -39,13 +39,13 @@ function App() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             <div 
-              className="flex items-end gap-px text-2xl font-light tracking-widest cursor-pointer hover:opacity-70 transition-opacity duration-500"
+              className="flex items-end cursor-pointer hover:opacity-70 transition-opacity duration-500"
               style={{ fontFamily: '"Apple Symbols", sans-serif' }}
               onClick={() => scrollToSection('hero')}
             >
-              <span>Ο</span>
-              <span className="pb-[2px]">ψ</span>
-              <span>Σ</span>
+              <span className="text-2xl font-light tracking-normal pr-[2px]">Ο</span>
+              <span className="text-2xl font-light pb-[2px] px-[1px]">ψ</span>
+              <span className="text-2xl font-light tracking-normal pl-[2px]">Σ</span>
             </div>
             <div className="hidden md:flex space-x-8">
               {['sobre', 'servicos', 'portfolio', 'contato'].map((item) => (
@@ -72,17 +72,26 @@ function App() {
               isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-           <div className="flex justify-center items-end mb-6">
-             <span className="text-[9rem] md:text-[11rem] font-extralight tracking-widest" style={{ fontFamily: '"Apple Symbols", sans-serif' }}>
-               Ο
-             </span>
-             <span className="text-[9rem] md:text-[11rem] font-extralight tracking-widest pb-4" style={{ fontFamily: '"Apple Symbols", sans-serif' }}>
-               ψ
-             </span>
-             <span className="text-[9rem] md:text-[11rem] font-extralight tracking-widest" style={{ fontFamily: '"Apple Symbols", sans-serif' }}>
-               Σ
-             </span>
-           </div>
+              <div className="flex justify-center items-end mb-6">
+                <span
+                  className="text-[9rem] md:text-[11rem] font-extralight pr-[10px]"
+                  style={{ fontFamily: '"Apple Symbols", sans-serif' }}
+                >
+                  Ο
+                </span>
+                <span
+                  className="text-[9rem] md:text-[11rem] font-extralight pb-4 px-[4px]"
+                  style={{ fontFamily: '"Apple Symbols", sans-serif' }}
+                >
+                  ψ
+                </span>
+                <span
+                  className="text-[9rem] md:text-[11rem] font-extralight pl-[10px]"
+                  style={{ fontFamily: '"Apple Symbols", sans-serif' }}
+                >
+                  Σ
+                </span>
+              </div>
             <p className="text-xl md:text-2xl font-light tracking-wide text-white/90 mb-12">
               Sua marca com alma, forma e presença.
             </p>
