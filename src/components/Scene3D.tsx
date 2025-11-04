@@ -1,32 +1,32 @@
 import { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Stars } from '@react-three/drei';
+import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 
 function AnimatedParticles() {
   const ref = useRef<THREE.Points>(null);
-  const count = 3000;
-  
+  const count = 2000; // Reduzido para menos poluição
+
   const positions = useMemo(() => {
     const positions = new Float32Array(count * 3);
-    
+
     for (let i = 0; i < count; i++) {
-      const radius = 20 + Math.random() * 10;
+      const radius = 25 + Math.random() * 15;
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(Math.random() * 2 - 1);
-      
+
       positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
       positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
       positions[i * 3 + 2] = radius * Math.cos(phi);
     }
-    
+
     return positions;
   }, []);
 
   useFrame((state, delta) => {
     if (ref.current) {
-      ref.current.rotation.x += delta * 0.1;
-      ref.current.rotation.y += delta * 0.15;
+      ref.current.rotation.x += delta * 0.05;
+      ref.current.rotation.y += delta * 0.1;
     }
   });
 
@@ -40,9 +40,9 @@ function AnimatedParticles() {
     <points ref={ref} geometry={geometry}>
       <pointsMaterial
         size={0.2}
-        color="#ffffff"
+        color="#000000"
         transparent
-        opacity={0.8}
+        opacity={0.3}
         sizeAttenuation
         depthWrite={false}
         blending={THREE.AdditiveBlending}
@@ -51,102 +51,25 @@ function AnimatedParticles() {
   );
 }
 
-function FloatingTorus() {
-  const meshRef = useRef<THREE.Mesh>(null);
-  
-  useFrame((state, delta) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x += delta * 0.5;
-      meshRef.current.rotation.y += delta * 0.7;
-      meshRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 2;
-      meshRef.current.position.x = Math.cos(state.clock.elapsedTime * 0.3) * 1;
-    }
-  });
-
-  return (
-    <mesh ref={meshRef} position={[0, 0, -8]}>
-      <torusGeometry args={[3, 0.8, 16, 100]} />
-      <meshStandardMaterial 
-        color="#ffffff" 
-        wireframe 
-        opacity={0.15}
-        transparent
-        emissive="#ffffff"
-        emissiveIntensity={0.3}
-      />
-    </mesh>
-  );
-}
-
-function RotatingBox() {
-  const meshRef = useRef<THREE.Mesh>(null);
-  
-  useFrame((state, delta) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x += delta * 0.3;
-      meshRef.current.rotation.z += delta * 0.2;
-      meshRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.8) * 1.5;
-    }
-  });
-
-  return (
-    <mesh ref={meshRef} position={[-5, 2, -6]}>
-      <boxGeometry args={[2, 2, 2]} />
-      <meshStandardMaterial 
-        color="#ffffff" 
-        wireframe 
-        opacity={0.2}
-        transparent
-        emissive="#ffffff"
-        emissiveIntensity={0.4}
-      />
-    </mesh>
-  );
-}
-
-function SpinningSphere() {
-  const meshRef = useRef<THREE.Mesh>(null);
-  
-  useFrame((state, delta) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x += delta * 0.4;
-      meshRef.current.rotation.y += delta * 0.6;
-      meshRef.current.scale.setScalar(1 + Math.sin(state.clock.elapsedTime * 2) * 0.1);
-    }
-  });
-
-  return (
-    <mesh ref={meshRef} position={[6, -2, -7]}>
-      <icosahedronGeometry args={[2, 1]} />
-      <meshStandardMaterial 
-        color="#ffffff" 
-        wireframe 
-        opacity={0.25}
-        transparent
-        emissive="#ffffff"
-        emissiveIntensity={0.5}
-      />
-    </mesh>
-  );
-}
-
 function LightOrb() {
   const lightRef = useRef<THREE.PointLight>(null);
   const meshRef = useRef<THREE.Mesh>(null);
-  
+
   useFrame((state) => {
     if (lightRef.current) {
       const t = state.clock.elapsedTime;
-      lightRef.current.position.x = Math.sin(t * 0.5) * 8;
-      lightRef.current.position.y = Math.cos(t * 0.3) * 6;
-      lightRef.current.position.z = Math.sin(t * 0.7) * 5;
+      lightRef.current.position.x = Math.sin(t * 0.4) * 10;
+      lightRef.current.position.y = Math.cos(t * 0.25) * 7;
+      lightRef.current.position.z = Math.sin(t * 0.6) * 6;
+      lightRef.current.intensity = 1.5 + Math.sin(t * 2) * 0.5;
     }
     if (meshRef.current) {
       const t = state.clock.elapsedTime;
-      meshRef.current.position.x = Math.sin(t * 0.5) * 8;
-      meshRef.current.position.y = Math.cos(t * 0.3) * 6;
-      meshRef.current.position.z = Math.sin(t * 0.7) * 5;
-      meshRef.current.scale.setScalar(0.5 + Math.sin(t * 2) * 0.3);
+      meshRef.current.position.x = Math.sin(t * 0.4) * 10;
+      meshRef.current.position.y = Math.cos(t * 0.25) * 7;
+      meshRef.current.position.z = Math.sin(t * 0.6) * 6;
+      const scale = 0.4 + Math.sin(t * 1.8) * 0.2;
+      meshRef.current.scale.setScalar(scale);
     }
   });
 
@@ -154,8 +77,8 @@ function LightOrb() {
     <>
       <pointLight ref={lightRef} intensity={2} color="#ffffff" />
       <mesh ref={meshRef}>
-        <sphereGeometry args={[0.5, 16, 16]} />
-        <meshBasicMaterial color="#ffffff" transparent opacity={0.6} />
+        <sphereGeometry args={[0.6, 16, 16]} />
+        <meshBasicMaterial color="#000000" transparent opacity={0.3} />
       </mesh>
     </>
   );
@@ -163,27 +86,43 @@ function LightOrb() {
 
 export default function Scene3D() {
   return (
-    <div className="fixed inset-0 -z-10">
+    <div className="fixed inset-0 z-0 pointer-events-none" style={{ zIndex: 0 }}>
       <Canvas
-        camera={{ position: [0, 0, 25], fov: 75 }}
-        gl={{ alpha: true, antialias: true, powerPreference: "high-performance" }}
+        camera={{ position: [0, 0, 30], fov: 75 }}
+        gl={{
+          alpha: true,
+          antialias: true,
+          powerPreference: "high-performance",
+          toneMapping: THREE.ACESFilmicToneMapping,
+          toneMappingExposure: 1
+        }}
+        style={{
+          background: 'transparent',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          zIndex: 0,
+          pointerEvents: 'none'
+        }}
       >
-        <ambientLight intensity={0.4} />
+        <ambientLight intensity={0.6} />
         <pointLight position={[10, 10, 10]} intensity={1.5} />
-        <pointLight position={[-10, -10, -10]} intensity={1} />
+        <pointLight position={[-10, -10, -10]} intensity={1.0} />
+        <pointLight position={[0, 10, -5]} intensity={0.8} />
         <LightOrb />
         <AnimatedParticles />
-        <FloatingTorus />
-        <RotatingBox />
-        <SpinningSphere />
-        <Stars radius={100} depth={50} count={5000} factor={4} fade speed={1} />
-        <OrbitControls 
-          enableZoom={false} 
+
+        <OrbitControls
+          enableZoom={false}
           enablePan={false}
           autoRotate
-          autoRotateSpeed={1}
+          autoRotateSpeed={0.5}
           minPolarAngle={Math.PI / 3}
           maxPolarAngle={Math.PI / 1.5}
+          enableDamping
+          dampingFactor={0.05}
         />
       </Canvas>
     </div>
